@@ -1,4 +1,4 @@
-package com.mod.marvelheros.ui.theme
+package com.mod.marvelheros.application.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
