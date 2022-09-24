@@ -1,4 +1,4 @@
-package com.mod.marvelheros
+package com.mod.marvelcomic
 
 import org.junit.Test
 

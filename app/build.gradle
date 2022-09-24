@@ -3,14 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlinx-serialization'
+    id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
 }
 
 android {
-    namespace 'com.mod.marvelheros'
+    namespace 'com.mod.marvelcomic'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.mod.marvelheros"
+        applicationId "com.mod.marvelcomic"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -29,8 +31,9 @@ android {
         }
 
         buildTypes.each {
-            it.buildConfigField "String", "API_URL", "\"https://gateway.marvel.com:443/\""
+            it.buildConfigField "String", "API_URL", "\"https://gateway.marvel.com:443\""
             it.buildConfigField "String", "API_KEY", "\"da3230656c7cae7089a198a1a9d56eb2\""
+            it.buildConfigField "String", "API_PRIVATE_KEY", "\"b82fc03c96258896892bed7f5b8eb3f887ea7730\""
         }
     }
     compileOptions {
@@ -49,6 +52,14 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        kotlin.sourceSets {
+            getByName(variant.name) {
+                kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
         }
     }
 }
@@ -70,4 +81,22 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "io.github.raamcosta.compose-destinations:animations-core:$compose_destination_version"
+    ksp "io.github.raamcosta.compose-destinations:ksp:$compose_destination_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    implementation "io.coil-kt:coil-compose:2.2.1"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
+
 }

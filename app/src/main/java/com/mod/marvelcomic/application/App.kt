@@ -1,4 +1,4 @@
-package com.mod.marvelheros.application
+package com.mod.marvelcomic.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

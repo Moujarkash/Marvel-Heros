@@ -1,4 +1,4 @@
-package com.mod.marvelheros.application.theme
+package com.mod.marvelcomic.application.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
