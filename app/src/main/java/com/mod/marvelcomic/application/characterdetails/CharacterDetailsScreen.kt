@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
@@ -98,11 +99,17 @@ fun CharacterDetailsScreen(
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
-                                items(comics, key = { comic ->
-                                    comic.id
-                                }) { item ->
+                                items(comics) { item ->
                                     item?.let { comic ->
                                         ComicListItem(comic = comic)
+                                    }
+                                }
+
+                                comics.apply {
+                                    when {
+                                        loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+                                            item { LoadingComponent(modifier = Modifier.width(100.dp).height(150.dp)) }
+                                        }
                                     }
                                 }
                             }
