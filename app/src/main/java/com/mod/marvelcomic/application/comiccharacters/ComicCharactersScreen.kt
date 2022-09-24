@@ -17,6 +17,7 @@ import com.mod.marvelcomic.R
 import com.mod.marvelcomic.application.comiccharacters.components.ComicCharacterListItem
 import com.mod.marvelcomic.application.components.ErrorComponent
 import com.mod.marvelcomic.application.components.LoadingComponent
+import com.mod.marvelcomic.application.destinations.CharacterDetailsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -31,9 +32,7 @@ fun ComicCharactersScreen(
     val comicCharacters = viewModel.comicCharacters.collectAsLazyPagingItems()
 
     Scaffold(topBar = {
-        TopAppBar {
-            Text(text = stringResource(id = R.string.characters_screen_title))
-        }
+        TopAppBar(title = { Text(text = stringResource(id = R.string.characters_screen_title)) })
     }) {
         LazyColumn(
             modifier = Modifier
@@ -45,9 +44,9 @@ fun ComicCharactersScreen(
             items(items = comicCharacters, key = { character ->
                 character.id
             }) { character ->
-                character?.let {
-                    ComicCharacterListItem(comicCharacter = it) {
-
+                character?.let { comicCharacter ->
+                    ComicCharacterListItem(comicCharacter = comicCharacter) {
+                        navigator.navigate(CharacterDetailsScreenDestination(comicCharacter.id, comicCharacter.name))
                     }
                 }
             }

@@ -38,7 +38,7 @@ fun ComicCharacterListItem(
             )
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                .padding(8.dp), verticalAlignment = if (comicCharacter.description.isNotEmpty()) Alignment.Bottom else Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = comicCharacter.name, modifier = Modifier.padding(8.dp))
                     if (comicCharacter.description.isNotEmpty())

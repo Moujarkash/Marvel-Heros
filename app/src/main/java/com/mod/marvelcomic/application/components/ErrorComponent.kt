@@ -22,7 +22,7 @@ fun ErrorComponent(
     ) {
         Text(text = stringResource(id = R.string.error_msg))
         if (onRetry != null) {
-            Spacer(modifier = Modifier.height(8.dp))
+            VerticalSpace()
             Button(onClick = onRetry) {
                 Text(text = stringResource(id = R.string.retry))
             }

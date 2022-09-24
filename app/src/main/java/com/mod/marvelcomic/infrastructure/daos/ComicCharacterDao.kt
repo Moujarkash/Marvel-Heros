@@ -12,6 +12,9 @@ interface ComicCharacterDao {
     @Query("SELECT * FROM comic_characters")
     fun pagingSource(): PagingSource<Int, ComicCharacterEntity>
 
+    @Query("SELECT * FROM comic_characters WHERE id = :id")
+    suspend fun getCharacter(id: Int): ComicCharacterEntity?
+
     @Query("DELETE FROM comic_characters")
     suspend fun clearAll()
 }

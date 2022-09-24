@@ -3,4 +3,6 @@
     <string name="characters_screen_title">Marvel Characters</string>
     <string name="error_msg">OOPS! Something Went Wrong</string>
     <string name="retry">Retry</string>
+    <string name="description_label">Description:</string>
+    <string name="comics_label">Comics:</string>
 </resources>
