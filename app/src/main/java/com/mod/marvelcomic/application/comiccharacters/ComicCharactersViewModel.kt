@@ -15,5 +15,5 @@ class ComicCharactersViewModel @Inject constructor(
     getComicCharactersUseCase: GetComicCharactersUseCase
 ) : ViewModel() {
     val comicCharacters: Flow<PagingData<ComicCharacter>> =
-        getComicCharactersUseCase(5).cachedIn(viewModelScope)
+        getComicCharactersUseCase(10).cachedIn(viewModelScope)
 }

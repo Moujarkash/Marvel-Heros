@@ -6,7 +6,9 @@ import com.mod.marvelcomic.domain.models.ComicCharacter
 
 @Entity(tableName = "comic_characters")
 data class ComicCharacterEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val dbId: Int = 0,
+    val id: Int,
     val name: String,
     val description: String,
     val thumbnail: String

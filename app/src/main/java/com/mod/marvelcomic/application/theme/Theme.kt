@@ -7,15 +7,15 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = RedPigment,
+    primaryVariant = EerieBlack,
+    secondary = White
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = RedPigment,
+    primaryVariant = EerieBlack,
+    secondary = White
 
     /* Other default colors to override
     background = Color.White,
@@ -28,12 +28,14 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun MarvelHerosTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+fun MarvelComicTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+//    val colors = if (darkTheme) {
+//        DarkColorPalette
+//    } else {
+//        LightColorPalette
+//    }
+
+    val colors = DarkColorPalette
 
     MaterialTheme(
         colors = colors,
