@@ -6,24 +6,24 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.mod.marvelcomic.infrastructure.core.AppDatabase
-import com.mod.marvelcomic.infrastructure.entities.CharacterComicEntity
+import com.mod.marvelcomic.infrastructure.entities.CharacterEventEntity
 import com.mod.marvelcomic.infrastructure.entities.RemoteKeyEntity
 import com.mod.marvelcomic.infrastructure.entities.RemoteKeyType
 import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class CharacterComicRemoteMediator(
+class CharacterEventRemoteMediator(
     private val characterId: Int,
     private val database: AppDatabase,
     private val remoteDataSource: ComicCharacterRemoteDataSource
-): RemoteMediator<Int, CharacterComicEntity>() {
-    private val characterComicDao = database.characterComicDao()
+): RemoteMediator<Int, CharacterEventEntity>() {
+    private val characterEventDao = database.characterEventDao()
     private val remoteKeyDao = database.remoteKeyDao()
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, CharacterComicEntity>
+        state: PagingState<Int, CharacterEventEntity>
     ): MediatorResult {
         return try {
             val limit = state.config.pageSize
@@ -33,7 +33,7 @@ class CharacterComicRemoteMediator(
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
                     val remoteKey = database.withTransaction {
-                        remoteKeyDao.getRemoteKey(RemoteKeyType.CharacterComic, characterId)
+                        remoteKeyDao.getRemoteKey(RemoteKeyType.CharacterEvent, characterId)
                     }
 
                     if (remoteKey?.offset == null) {
@@ -46,22 +46,22 @@ class CharacterComicRemoteMediator(
                 }
             }
 
-            val response = remoteDataSource.getCharacterComics(characterId, offset, limit)
+            val response = remoteDataSource.getCharacterEvents(characterId, offset, limit)
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    characterComicDao.clearAll(characterId)
-                    remoteKeyDao.delete(RemoteKeyType.CharacterComic, characterId)
+                    characterEventDao.clearAll(characterId)
+                    remoteKeyDao.delete(RemoteKeyType.CharacterEvent, characterId)
                 }
 
-                remoteKeyDao.insertOrReplace(RemoteKeyEntity(characterId, RemoteKeyType.CharacterComic,  response.data.offset + limit))
+                remoteKeyDao.insertOrReplace(RemoteKeyEntity(characterId, RemoteKeyType.CharacterEvent,  response.data.offset + limit))
 
-                characterComicDao.insertAll(response.data.results.map { characterComicDto -> CharacterComicEntity(
-                    id = characterComicDto.id,
+                characterEventDao.insertAll(response.data.results.map { characterEventDto -> CharacterEventEntity(
+                    id = characterEventDto.id,
                     characterId = characterId,
-                    title = characterComicDto.title,
-                    description = characterComicDto.description,
-                    thumbnail = characterComicDto.thumbnail.getFullUrl()
+                    title = characterEventDto.title,
+                    description = characterEventDto.description,
+                    thumbnail = characterEventDto.thumbnail.getFullUrl()
                 ) })
             }
 

@@ -1,14 +1,14 @@
 package com.mod.marvelcomic.application.characterdetails
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mod.marvelcomic.domain.models.Comic
-import com.mod.marvelcomic.domain.models.ComicCharacter
+import com.mod.marvelcomic.domain.models.Event
 import com.mod.marvelcomic.domain.usecases.GetCharacterComicsUseCase
+import com.mod.marvelcomic.domain.usecases.GetCharacterEventsUseCase
 import com.mod.marvelcomic.domain.usecases.GetComicCharacterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +21,7 @@ import javax.inject.Inject
 class CharacterDetailsViewModel@Inject constructor(
     private val getComicCharacterUseCase: GetComicCharacterUseCase,
     getCharacterComicsUseCase: GetCharacterComicsUseCase,
+    getCharacterEventsUseCase: GetCharacterEventsUseCase,
     state: SavedStateHandle
 ) : ViewModel() {
     val characterId = state.get<Int>("characterId") ?: -1
@@ -30,6 +31,9 @@ class CharacterDetailsViewModel@Inject constructor(
 
     val comics: Flow<PagingData<Comic>> =
         getCharacterComicsUseCase(characterId, 3).cachedIn(viewModelScope)
+
+    val events: Flow<PagingData<Event>> =
+        getCharacterEventsUseCase(characterId, 3).cachedIn(viewModelScope)
 
     init {
         getCharacter()

@@ -16,7 +16,7 @@ interface RemoteKeyDao {
     suspend fun getRemoteKey(type: RemoteKeyType): RemoteKeyEntity
 
     @Query("SELECT * FROM remote_key WHERE type = :type AND id = :id")
-    suspend fun getRemoteKey(type: RemoteKeyType, id: Int): RemoteKeyEntity
+    suspend fun getRemoteKey(type: RemoteKeyType, id: Int): RemoteKeyEntity?
 
     @Query("DELETE FROM remote_key WHERE type = :type")
     suspend fun delete(type: RemoteKeyType)

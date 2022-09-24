@@ -11,5 +11,5 @@ data class RemoteKeyEntity(
 )
 
 enum class RemoteKeyType {
-    Character, CharacterComic
+    Character, CharacterComic, CharacterEvent
 }

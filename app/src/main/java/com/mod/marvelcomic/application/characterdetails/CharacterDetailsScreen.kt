@@ -22,6 +22,7 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.mod.marvelcomic.R
 import com.mod.marvelcomic.application.characterdetails.components.ComicListItem
+import com.mod.marvelcomic.application.characterdetails.components.EventListItem
 import com.mod.marvelcomic.application.components.LoadingComponent
 import com.mod.marvelcomic.application.components.VerticalSpace
 import com.ramcosta.composedestinations.annotation.Destination
@@ -37,6 +38,7 @@ fun CharacterDetailsScreen(
 ) {
     val characterState by viewModel.characterState.collectAsState()
     val comics = viewModel.comics.collectAsLazyPagingItems()
+    val events = viewModel.events.collectAsLazyPagingItems()
 
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = characterName) }, navigationIcon = {
@@ -102,6 +104,36 @@ fun CharacterDetailsScreen(
                                 items(comics) { item ->
                                     item?.let { comic ->
                                         ComicListItem(comic = comic)
+                                    }
+                                }
+
+                                comics.apply {
+                                    when {
+                                        loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+                                            item { LoadingComponent(modifier = Modifier.width(100.dp).height(150.dp)) }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (events.itemCount > 0) {
+                            VerticalSpace(16.dp)
+                            Text(
+                                text = stringResource(id = R.string.events_label),
+                                style = MaterialTheme.typography.h5,
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+                            VerticalSpace()
+                            LazyRow(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                items(events) { item ->
+                                    item?.let { event ->
+                                        EventListItem(event = event)
                                     }
                                 }
 
