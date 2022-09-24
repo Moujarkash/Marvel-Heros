@@ -6,4 +6,6 @@
     <string name="description_label">Description:</string>
     <string name="comics_label">Comics:</string>
     <string name="events_label">Events:</string>
+    <string name="series_label">Series:</string>
+    <string name="stories_label">Stories:</string>
 </resources>

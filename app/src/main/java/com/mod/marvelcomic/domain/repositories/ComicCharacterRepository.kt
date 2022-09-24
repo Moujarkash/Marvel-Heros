@@ -1,9 +1,7 @@
 package com.mod.marvelcomic.domain.repositories
 
 import androidx.paging.PagingData
-import com.mod.marvelcomic.domain.models.Comic
-import com.mod.marvelcomic.domain.models.ComicCharacter
-import com.mod.marvelcomic.domain.models.Event
+import com.mod.marvelcomic.domain.models.*
 import kotlinx.coroutines.flow.Flow
 
 interface ComicCharacterRepository {
@@ -11,4 +9,6 @@ interface ComicCharacterRepository {
     suspend fun getComicCharacter(id: Int): ComicCharacter?
     fun getCharacterComics(characterId: Int, limit: Int): Flow<PagingData<Comic>>
     fun getCharacterEvents(characterId: Int, limit: Int): Flow<PagingData<Event>>
+    fun getCharacterSeries(characterId: Int, limit: Int): Flow<PagingData<Series>>
+    fun getCharacterStories(characterId: Int, limit: Int): Flow<PagingData<Story>>
 }

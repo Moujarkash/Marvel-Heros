@@ -1,18 +1,11 @@
 package com.mod.marvelcomic.infrastructure.repositories
 
 import androidx.paging.*
-import com.mod.marvelcomic.domain.models.Comic
-import com.mod.marvelcomic.domain.models.ComicCharacter
-import com.mod.marvelcomic.domain.models.Event
+import com.mod.marvelcomic.domain.models.*
 import com.mod.marvelcomic.domain.repositories.ComicCharacterRepository
 import com.mod.marvelcomic.infrastructure.core.AppDatabase
-import com.mod.marvelcomic.infrastructure.datasources.CharacterComicRemoteMediator
-import com.mod.marvelcomic.infrastructure.datasources.CharacterEventRemoteMediator
-import com.mod.marvelcomic.infrastructure.datasources.ComicCharacterRemoteDataSource
-import com.mod.marvelcomic.infrastructure.datasources.ComicCharacterRemoteMediator
-import com.mod.marvelcomic.infrastructure.entities.toComic
-import com.mod.marvelcomic.infrastructure.entities.toComicCharacter
-import com.mod.marvelcomic.infrastructure.entities.toEvent
+import com.mod.marvelcomic.infrastructure.datasources.*
+import com.mod.marvelcomic.infrastructure.entities.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -59,5 +52,31 @@ class ComicCharacterRepositoryImpl @Inject constructor(
         ) {
             database.characterEventDao().pagingSource(characterId)
         }.flow.map { entities -> entities.map { it.toEvent() } }
+    }
+
+    override fun getCharacterSeries(characterId: Int, limit: Int): Flow<PagingData<Series>> {
+        return Pager(
+            config = PagingConfig(pageSize = limit),
+            remoteMediator = CharacterSeriesRemoteMediator(
+                characterId,
+                database,
+                comicCharacterRemoteDataSource
+            )
+        ) {
+            database.characterSeriesDao().pagingSource(characterId)
+        }.flow.map { entities -> entities.map { it.toSeries() } }
+    }
+
+    override fun getCharacterStories(characterId: Int, limit: Int): Flow<PagingData<Story>> {
+        return Pager(
+            config = PagingConfig(pageSize = limit),
+            remoteMediator = CharacterStoryRemoteMediator(
+                characterId,
+                database,
+                comicCharacterRemoteDataSource
+            )
+        ) {
+            database.characterStoryDao().pagingSource(characterId)
+        }.flow.map { entities -> entities.map { it.toStory() } }
     }
 }
