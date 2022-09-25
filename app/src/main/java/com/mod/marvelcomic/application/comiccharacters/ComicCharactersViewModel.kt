@@ -16,4 +16,6 @@ class ComicCharactersViewModel @Inject constructor(
 ) : ViewModel() {
     val comicCharacters: Flow<PagingData<ComicCharacter>> =
         getComicCharactersUseCase(10).cachedIn(viewModelScope)
+
+    var charactersScrollIndex = 1
 }
